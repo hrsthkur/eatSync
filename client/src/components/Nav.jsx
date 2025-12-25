@@ -8,11 +8,12 @@ import axios from "axios";
 import { setUserData } from "../redux/userSlice";
 import { FaPlus } from "react-icons/fa";
 import { LuReceiptIndianRupee } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
 
 const Nav = () => {
   const { userData, city } = useSelector((state) => state.user);
   const { myShopData } = useSelector((state) => state.owner);
-  
+  const navigate = useNavigate()
   const [showInfo, setShowInfo] = useState(false);
   const dispatch = useDispatch();
   const handleLogout = async () => {
@@ -66,7 +67,7 @@ const Nav = () => {
 
         {userData.role === "owner" ? (
           <>
-          {myShopData && <button className="flex items-center gap-1 p-2 cursor-pointer rounded-full bg-[#ff4d2d]/10 text-[#ff4d2d]">
+          {myShopData && <button onClick={()=>navigate("/add-food")} className="flex items-center gap-1 p-2 cursor-pointer rounded-full bg-[#ff4d2d]/10 text-[#ff4d2d]">
               <FaPlus size={20} />
               <span>Add Food Item</span>
             </button> }

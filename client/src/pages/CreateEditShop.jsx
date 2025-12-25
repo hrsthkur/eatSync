@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { FaUtensils } from "react-icons/fa";
 import { serverUrl } from "../App";
 import { setMyShopData } from "../redux/ownerSlice";
+import { ClipLoader } from "react-spinners";
 const CreateEditShop = () => {
   const navigate = useNavigate();
   const { myShopData } = useSelector((state) => state.owner);
@@ -18,10 +19,12 @@ const CreateEditShop = () => {
   const [frontendImage,setFrontendImage] = useState(myShopData?.image || null)
   const [backendImage,setBackendImage] = useState(null)
   const dispatch = useDispatch()
+    const [loading,setLoading] = useState(false);
 
   const handleSubmit = async(e)=>{
 
     e.preventDefault();
+    setLoading(true);
     try {
 
       const formData = new FormData()
@@ -34,11 +37,12 @@ const CreateEditShop = () => {
       }
       const result = await axios.post(`${serverUrl}/api/shop/create-edit`,formData,{withCredentials:true})
       dispatch(setMyShopData(result.data))
-      console.log(result.data);
-      
+     setLoading(false)
+      navigate("/")
 
 
     } catch (error) {
+      setLoading(false)
       console.log(error);
       
     }
@@ -135,8 +139,8 @@ const CreateEditShop = () => {
               className="w-full  px-4 py-2 border  rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
-          <button className="w-full bg-[#ff4d2d] text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-orange-600 hover:shadow-lg cursor-pointer transition-all">
-            Save
+          <button disabled={loading} className="w-full bg-[#ff4d2d] text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-orange-600 hover:shadow-lg cursor-pointer transition-all">
+            {loading ? <ClipLoader size={20} color="white"/> : "Save"}
           </button>
         </form>
       </div>
