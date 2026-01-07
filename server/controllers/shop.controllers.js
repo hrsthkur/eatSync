@@ -1,3 +1,4 @@
+import { rmSync } from "fs";
 import Shop from "../models/shop.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
 
@@ -40,6 +41,24 @@ export const getShop = async(req,res) => {
         return res.status(200).json(shop);
         
     } catch (error) {
-        return res.status(500).json(`Get shop details error ${error}`)
+        return res.status(500).json({message:`Get shop details error ${error}`})
     }
+}
+
+export const getShopByCity = async(req,res)=>{
+    const {city} = req.params
+    try {
+         const shops = await Shop.find({
+        city:{$regex:new RegExp(`^${city}$`,"i")}
+    }).populate('items')
+    if(!shops){
+        return res.status(400).json({message:" Shops not found"})
+    }
+    return res.status(200).json(shops)
+        
+    } catch (error) {
+         return res.status(500).json({message:`Get shop by city error ${error}`})
+    }
+   
+    
 }
