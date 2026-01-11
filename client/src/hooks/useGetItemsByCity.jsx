@@ -11,7 +11,7 @@ const useGetItemsByCity = () => {
   useEffect(()=>{
     const fetchItems = async () => {
     try {
-      const result = await axios.get(`${serverUrl}/api/shop/get-by-city/${currentCity}`,{withCredentials:true})
+      const result = await axios.get(`${serverUrl}/api/item/get-by-city/${currentCity}`,{withCredentials:true})
       dispatch(setItemsInMyCity(result.data));
       console.log(result.data);
       

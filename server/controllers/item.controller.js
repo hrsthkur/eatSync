@@ -115,7 +115,9 @@ export const getItemByCity = async(req,res) =>{
         }
       
        const ShopIds = shops.map((shop)=>shop._id)
-       const items = Item.find({shop:{$in:ShopIds}})
+       const items = await Item.find({shop:{$in:ShopIds}})
+       console.log(items);
+       
        return res.status(200).json(items)
     
 

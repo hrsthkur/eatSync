@@ -7,7 +7,7 @@ import { FaChevronCircleRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import useGetShopByCity from "../hooks/useGetShopByCity";
 import useGetItemsByCity from "../hooks/useGetItemsByCity";
-import FoodCart from "./FoodCart";
+import FoodCart from "./FoodCard";
 
 
 
@@ -31,6 +31,8 @@ const UserDashboard = () => {
 
 
   }
+  console.log(itemsInMyCity);
+  
 
   useEffect(()=>{
     const elem = catScrollRef.current
@@ -116,10 +118,11 @@ const UserDashboard = () => {
     <div className="w-full max-w-6xl flex flex-col gap-5 items-start p-[10px]">
        <h1 className="text-gray-800 text-2xl sm:text-3xl">Suggested food items</h1>
    
-          <div className="w-full h-auto flex flex-wrap gap-[20px] justify-center"></div>
+          <div className="w-full h-auto flex flex-wrap gap-[20px] justify-center">
           {itemsInMyCity?.map((item,index)=>(
             <FoodCart key={index} data={item}/>
           ))}
+    </div>
     </div>
 
     </div>
