@@ -11,7 +11,7 @@ import { LuReceiptIndianRupee } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
 const Nav = () => {
-  const { userData, city } = useSelector((state) => state.user);
+  const { userData, city, cartItems } = useSelector((state) => state.user);
   const { myShopData } = useSelector((state) => state.owner);
   const navigate = useNavigate()
   const [showInfo, setShowInfo] = useState(false);
@@ -81,10 +81,10 @@ const Nav = () => {
           </>
         ) : (
           <>
-            <div className="relative cursor-pointer flex-shrink-0">
+            <div className="relative cursor-pointer flex-shrink-0" onClick={()=>navigate("/cart")}>
               <FiShoppingCart size={25} className="text-[#ff4d2d]" />
               <span className="absolute right-[-9px] top-[-12px] text-[#ff4d2d]">
-                0
+                {cartItems.length}
               </span>
             </div>
             <button className="hidden md:block px-3 py-1 rounded-lg bg-[#ff4d2d]/10 text-[#ff4d2d] text-sm font-medium flex-shrink-0">

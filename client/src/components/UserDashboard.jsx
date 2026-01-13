@@ -31,7 +31,7 @@ const UserDashboard = () => {
 
 
   }
-  console.log(itemsInMyCity);
+  
   
 
   useEffect(()=>{
