@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userSlice from "./userSlice"
+import mapSlice from "./mapSlice"
 import ownerSlice from "./ownerSlice"
 
 
 export const store = configureStore({
     reducer:{
         user:userSlice,
-        owner:ownerSlice
+        owner:ownerSlice,
+        map:mapSlice,
     }
 })
