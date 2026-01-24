@@ -10,6 +10,10 @@ import "leaflet/dist/leaflet.css";
 import { setAddress, setLocation } from "../redux/mapSlice";
 import axios from "axios";
 
+
+
+
+
 function RecenterMap({ location }) {
   if (location.lat && location.lon) {
     const map = useMap();
@@ -19,9 +23,11 @@ function RecenterMap({ location }) {
 }
 
 function CheckOut() {
+  const apiKey = import.meta.env.VITE_GEOAPIKEY;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { location, address } = useSelector((state) => state.map);
+  const [addressInput,setAddressInput] = useState("");
   const onDragEnd = (e) => {
     console.log(e.target._latlng);
     const lat = e.target._latlng.lat;
@@ -33,15 +39,43 @@ function CheckOut() {
   };
   const getAddressByLatLng = async ({ lat, lng }) => {
     try {
-      const apiKey = import.meta.env.VITE_GEOAPIKEY;
+      console.log({lat,lng})
       const result =
         await axios.get(`https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lng}&format=json&apiKey=${apiKey}
 `);
-      dispatch(setAddress(result?.data?.results[0]?.address_line2))
+      dispatch(setAddress(result?.data?.results[0]?.address_line1 + " " + result?.data?.results[0]?.address_line2))
     } catch (error) {
       console.log(error);
     }
   };
+
+  const getLatLngByAddress = async()=>{
+    try {
+      const result = await axios.get(`https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(addressInput)}&apiKey=${apiKey}`)
+      console.log(result)
+      const {lat,lon} = result.data.features[0].properties
+      dispatch(setLocation({lat,lon}))
+     console.log(lat,lon)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
+   const getCurrentLocation = ()=>{
+     navigator.geolocation.getCurrentPosition(async (position) => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      dispatch(setLocation({lat:latitude,lon:longitude}))
+       getAddressByLatLng({latitude,longitude});
+     })
+    
+        }
+
+        useEffect(()=>{
+          setAddressInput(address)
+        },[address])
+   
 
   return (
     <div className="min-h-screen bg-[#fff9f6] flex items-center p-6">
@@ -63,12 +97,16 @@ function CheckOut() {
               type="text"
               className="flex-1 border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#ff4d2d]"
               placeholder="Enter your delivery address"
-              value={address}
+              value={addressInput}
+              onChange={(e)=>setAddressInput(e.target.value)}
             />
-            <button className="bg-[#ff4d2d] hover:bg-[#e64526] text-white px-3 py-2 rounded-lg flex items-center justify-center">
+            <button className="bg-[#ff4d2d] hover:bg-[#e64526] text-white px-3 py-2 rounded-lg flex items-center justify-center"
+            onClick={getLatLngByAddress}>
               <FaSearchengin />
             </button>
-            <button className="bg-blue-500 hover:bg-bg-blue-600 text-white px-3 py-2 rounded-lg flex items-center justify-center">
+            <button
+            onClick={getCurrentLocation}
+            className="bg-blue-500 hover:bg-bg-blue-600 text-white px-3 py-2 rounded-lg flex items-center justify-center">
               <TbCurrentLocation />
             </button>
           </div>

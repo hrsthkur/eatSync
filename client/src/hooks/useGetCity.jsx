@@ -24,14 +24,15 @@ const useGetcity = () => {
         await axios.get(`https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&format=json&apiKey=${apiKey}
 `);
 
-      const city = result?.data?.results[0]?.city;
+      const city = result?.data?.results[0]?.state_district;
       const state = result?.data?.results[0]?.state;
-      const address = result?.data?.results[0]?.address_line2;
+      const address = result?.data?.results[0]?.address_line1;
       dispatch(setAddress(address))
 
       dispatch(setCurrentCity(city));
       dispatch(setCurrentState(state));
       dispatch(setCurrentAddress(address));
+      
     });
   }, [userData]);
 };
