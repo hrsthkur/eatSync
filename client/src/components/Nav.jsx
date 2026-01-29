@@ -87,7 +87,7 @@ const Nav = () => {
                 {cartItems.length}
               </span>
             </div>
-            <button className="hidden md:block px-3 py-1 rounded-lg bg-[#ff4d2d]/10 text-[#ff4d2d] text-sm font-medium flex-shrink-0">
+            <button onClick={()=>navigate('/my-orders')} className="hidden md:block px-3 py-1 rounded-lg bg-[#ff4d2d]/10 text-[#ff4d2d] text-sm font-medium flex-shrink-0">
               My orders
             </button>
           </>
@@ -102,7 +102,7 @@ const Nav = () => {
         {showInfo && (
           <div className="fixed top-[80px] right-[10px] md:right-[10px] lg:right-[25%] w-[180px] bg-white shadow-2xl rounded-xl p-[20px] flex flex-col gap-[10px] z-[9999]">
             <div className="text-[17px] font-semibold">{userData.fullName}</div>
-            <div className="md:hidden text-[#ff4d2d] font-semibold cursor-pointer">
+            <div onClick={()=>navigate('/my-orders')} className="md:hidden text-[#ff4d2d] font-semibold cursor-pointer">
               My orders
             </div>
             <div

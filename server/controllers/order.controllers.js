@@ -1,5 +1,6 @@
 import Order from "../models/order.model.js";
 import Shop from "../models/shop.model.js";
+import User from "../models/user.model.js";
 
 export const placeOrder = async (req,res) => {
   try {
@@ -63,34 +64,31 @@ export const placeOrder = async (req,res) => {
   }
 };
 
-export const getUserOrders = async (req,res) => {
+export const getMyOrders = async (req,res) => {
   try {
-    const orders = await Order.find({user:req.userId})
+     const user = await User.findById(req.userId)
+    if(user.role == 'user'){
+const orders = await Order.find({user:req.userId})
     .sort({createdAt:-1})
     .populate("shopOrders.shop","name")
     .populate("shopOrders.owner","name email mobile")
     .populate("shopOrders.shopOrderItem.item","name image price")
 
     return res.status(200).json(orders)
-
-    
-  } catch (error) {
-    return res.status(500).json({message: "Get user orders error"})
   }
-}
-
-export const getOwnerOrder = async(req,res) =>{
-   try {
-    const orders = await Order.find({"shopOrders.owner":req.userId})
+  if(user.role == 'owner'){
+const orders = await Order.find({"shopOrders.owner":req.userId})
     .sort({createdAt:-1})
     .populate("shopOrders.shop","name")
     .populate("user")
     .populate("shopOrders.shopOrderItem.item","name image price")
 
     return res.status(200).json(orders)
-
+    
+  }
     
   } catch (error) {
-    return res.status(500).json({message: "Get owner orders error"})
+    return res.status(500).json({message: "Get  orders error"})
   }
 }
+

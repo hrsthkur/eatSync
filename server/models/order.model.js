@@ -9,7 +9,7 @@ const shopOrderItemSchema = new mongoose.Schema({
     },
     name:String,
     price:Number,
-    quantity:Number
+    quantity:Number,
 },{timestamps: true})
 const shopOrderSchema = new mongoose.Schema({
     shop:{
@@ -21,7 +21,12 @@ const shopOrderSchema = new mongoose.Schema({
         ref:"User"
     },
     subtotal:Number,
-    shopOrderItem:[shopOrderItemSchema]
+    shopOrderItem:[shopOrderItemSchema],
+    status:{
+        type:String,
+        enum:["pending","preparing","out for delivery","delivered"],
+        default:"pending"
+    }
 
 },{timestamps:true})
 
@@ -48,5 +53,5 @@ const orderSchema = new mongoose.Schema({
     shopOrders:[shopOrderSchema]
 },{timestamps:true})
 
-const Order = mongoose.model("Orde",orderSchema)
+const Order = mongoose.model("Order",orderSchema)
 export default Order;
