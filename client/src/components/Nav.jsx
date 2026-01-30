@@ -72,9 +72,9 @@ const Nav = () => {
               <span>Add Food Item</span>
             </button> }
             
-            <div className="flex items-center gap-2 cursor-pointer relative px-3 py-1 rounded-lg bg-[#ff4d2d]/10 text-[#ff4d2d] font-medium">
+            <div onClick={()=>navigate('/my-orders')} className="flex items-center gap-2 cursor-pointer relative px-3 py-1 rounded-lg bg-[#ff4d2d]/10 text-[#ff4d2d] font-medium">
               <LuReceiptIndianRupee size={20} />
-              <span>Pending orders</span>
+              <span>My orders</span>
               <span className="absolute -right-2 -top-2 text-xs font-bold text-white bg-[#ff4d2d] rounded-full px-[6px] py-[1px] ">0</span>
 
             </div>

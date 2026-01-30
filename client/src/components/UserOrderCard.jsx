@@ -9,7 +9,9 @@ const UserOrderCard = ({ data }) => {
       year: "numeric",
     });
   };
+   {console.log(data)}
   return (
+   
     <div className="bg-white rounded-lg shadow p-4 space-y-4">
       <div className="flex justify-between border-b pb-2">
         <div>
@@ -33,6 +35,7 @@ const UserOrderCard = ({ data }) => {
             key={idx}
             className="border rounded-lg p-3 bg-[#fffaf7] space-y-3 "
           >
+            {/* {console.log(order.shop.name)} */}
             <p>{order.shop.name}</p>
             <div className="flex space-x-4 overflow-auto pb-2">
               {order.shopOrderItem.map((item, index) => (
