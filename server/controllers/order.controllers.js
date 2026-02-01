@@ -90,6 +90,7 @@ const orders = await Order.find({"shopOrders.owner":req.userId})
     const filteredOrders = orders.map((order)=>({
       _id:order._id,
       paymentMethod:order.paymentMethod,
+      user:order.user,
       shopOrders:order.shopOrders.find((o)=>o.owner._id == req.userId),
       createdAt:order.createdAt,
       deliveryAddress:order.deliveryAddress
