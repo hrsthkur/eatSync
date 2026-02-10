@@ -168,8 +168,6 @@ export const googleAuth = async (req,res) => {
 export const resetPassword = async(req,res) =>{
     try {
         const {email,newPassword} = req.body;
-        console.log(email,newPassword);
-        
         const user = await User.findOne({email});
         if(!user || !user.isOtpVerified){ return res.status(400).json("User doesn't exist or Otp not verified")}
 
@@ -182,8 +180,6 @@ export const resetPassword = async(req,res) =>{
 
 
     } catch (error) {
-  console.error("🔥 RESET PASSWORD ERROR 🔥");
-  console.error(error);
   return res.status(500).json({
     message: error.message,
     stack: error.stack
