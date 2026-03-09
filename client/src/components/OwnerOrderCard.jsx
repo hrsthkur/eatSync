@@ -4,15 +4,19 @@ import { serverUrl } from "../App";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { updateOrderStatus } from "../redux/userSlice";
+import { useState } from "react";
 
 function OwnerOrderCard({ data }) {
+  const [availablePartners,setAvailablePartners] = useState([])
   const dispatch = useDispatch()
   const handleUpdateStatus = async (orderId,shopId,status) => {
     try {
       
       const result = await axios.post(`${serverUrl}/api/order/update-status/${orderId}/${shopId}`,{status},{withCredentials:true})
       dispatch(updateOrderStatus({orderId,shopId,status}))
+      setAvailablePartners(result.data.availableDeliveryPartners)
       console.log(result.data)
+      
     } catch (error) {
       console.log(error)
     }
@@ -68,13 +72,29 @@ function OwnerOrderCard({ data }) {
               <option value="preparing">Preparing</option>
               <option value="out for delivery">Out for delivery</option>
             </select>
+            </div>
+
+            {data.shopOrders.status == "out for delivery" &&
+            <div className="mt-3 p-2 border rounded-lg text-sm bg-orange-50">
+                <p>Available Delivery Partners</p>
+                {availablePartners.length > 0 ? (
+                  availablePartners.map((p,idx)=>(
+                    <div key={idx} className="text-gray-300">{p.fullname}-{p.mobile}</div>
+                  ))
+                ) : (
+                  <div>
+                    Delivery Partners are not available currently
+                  </div>
+                )}
+            </div>
+            }
             
               <div className="text-right font-bold text-gray-800 text-sm">
                 Total: ₹{data.shopOrders.subtotal}
               </div>
 
 
-            </div>
+            
 
     </div>
   );

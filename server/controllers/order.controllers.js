@@ -127,7 +127,7 @@ export const updateOrderStatus = async (req, res) => {
               type: "Point",
               coordinates: [Number(longitude), Number(latitude)],
             },
-            $maxDistance: 5000,
+            $maxDistance: 5000000000,
           },
         },
       });
@@ -175,17 +175,19 @@ export const updateOrderStatus = async (req, res) => {
 
     await shopOrder.save();
     await order.save();
+
+    const updatedShopOrder = order.shopOrders.find(o=>o.shop == shopId)
     await order.populate("shopOrders.shop","name")
     await order.populate("shopOrders.assignedDeliveryBoy","fullName,email,mobile")
 
-    const updatedShopOrder = order.shopOrders.find(o=>o.shop == shopId)
+    
 
 
     return res.status(200).json({
       shopOrder:updatedShopOrder,
-      assignedDeliveryPartner:updatedShopOrder.assignedDeliveryBoy,
+      assignedDeliveryPartner:updatedShopOrder?.assignedDeliveryBoy,
       availableDeliveryPartners:deliveryPartnersPayload,
-      assignment:updatedShopOrder.assignment._id
+      assignment:updatedShopOrder?.assignment._id
 
     });
   } catch (error) {
