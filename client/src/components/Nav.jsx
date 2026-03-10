@@ -81,12 +81,14 @@ const Nav = () => {
           </>
         ) : (
           <>
-            <div className="relative cursor-pointer flex-shrink-0" onClick={()=>navigate("/cart")}>
+
+          {userData.role == "user" && <div className="relative cursor-pointer flex-shrink-0" onClick={()=>navigate("/cart")}>
               <FiShoppingCart size={25} className="text-[#ff4d2d]" />
               <span className="absolute right-[-9px] top-[-12px] text-[#ff4d2d]">
                 {cartItems.length}
               </span>
-            </div>
+            </div>}
+            
             <button onClick={()=>navigate('/my-orders')} className="hidden md:block px-3 py-1 rounded-lg bg-[#ff4d2d]/10 text-[#ff4d2d] text-sm font-medium flex-shrink-0">
               My orders
             </button>
